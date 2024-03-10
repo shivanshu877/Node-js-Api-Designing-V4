@@ -25,7 +25,42 @@ model Product {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
 
-  name        String @db.VarChar(255)
+  name        String   @db.VarChar(255)
   belongsToID String
-  belongsTo   User   @relation(fields: [belongsToID], references: [id])
+  belongsTo   User     @relation(fields: [belongsToID], references: [id])
+  Update      Update[]
+}
+
+enum UPDATE_STATUS {
+  IN_PROGRESS
+  SHIPPED
+  DEPRECATED
+}
+
+model Update {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  title   String
+  body    String
+  status  UPDATE_STATUS @default(IN_PROGRESS)
+  version String? // for optional
+  asset   String?
+
+  productID   String
+  product     Product       @relation(fields: [productID], references: [id])
+  UpdatePoint UpdatePoint[]
+}
+
+model UpdatePoint {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name        String @db.VarChar(255)
+  description String
+
+  updateId String
+  update   Update @relation(fields: [updateId], references: [id])
 }
