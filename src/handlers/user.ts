@@ -6,11 +6,8 @@ export const createNewUser = async (req , res) =>{
     data: {
     username: req.body.username,
     password:await hashPassword ( req.body.password),
-
   } 
-})
-
-
+}) 
 const token = createJWT(User);
 res.json({token})
 }
