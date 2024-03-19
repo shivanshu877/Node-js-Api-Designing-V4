@@ -45,7 +45,7 @@ model Update {
   title   String
   body    String
   status  UPDATE_STATUS @default(IN_PROGRESS)
-  version String? // for optional
+  version String? // for ptional
   asset   String?
 
   productID   String
