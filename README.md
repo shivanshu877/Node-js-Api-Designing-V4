@@ -23,6 +23,19 @@ This README provides an overview of the tools, setup, and a brief summary of an 
 7. **Run Migrations**: Synchronize the database schema with the Prisma schema.
 8. **Start the Server**: Run the command to start the Express server.
 
+# Postman Collection
+
+To test the APIs, you can import the following Postman collection:
+
+<!-- Start of "Run in Postman" Button -->
+[<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;">](https://app.getpostman.com/run-collection/20448680-ac6c5e0d-b183-46c0-b702-91f41b022295?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D20448680-ac6c5e0d-b183-46c0-b702-91f41b022295%26entityType%3Dcollection%26workspaceId%3D401fc04a-5924-4338-b601-95ccd22e7893)
+
+
+<!-- End of "Run in Postman" Button -->
+
+You can click the "Run in Postman" button above to directly import the collection into your Postman app.
+
+
 ## Project Overview
 
 This Project covers fundamental topics in API development, including:
