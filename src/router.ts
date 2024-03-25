@@ -2,6 +2,8 @@ import { Router } from 'express';
 import { body, param, validationResult } from 'express-validator';
 import handleInputErrors from './middlewares';
 import { CreateNewProduct, GetAllProducts, GetaOneProduct, UpdateProduct, DeleteProduct } from '../src/handlers/product';
+import { GetAllUpdate, CreateUpdate, GetOneUpdate, UpdateUpdate, DeleteUpdate } from '../src/handlers/update';
+
 const router = Router();
 
 
@@ -24,39 +26,29 @@ router.delete('/product/:id', DeleteProduct)
 
 
 
-router.get('/update', (req: Request, res: any) => {
+router.get('/update', GetAllUpdate)
 
 
-});
+router.get('/update/:id', GetOneUpdate)
 
 
-router.get('/update/:id', param('id').exists().toInt().isInt({ min: 0 }), handleInputErrors, (req: Request, res: any) => {
 
 
-});
-
-
-router.put('/update/:id', param('id').exists().toInt(), (req: Request, res: any) => {
-
-
-});
+router.put('/update/:id',
+    body('title').optional(),
+    body('body').optional(),
+    body('status').isIn(['IN_PROGRESS', 'SHIPPED', 'DEPRECATED']).optional(),
+    body('version').optional(), UpdateUpdate)
 
 
 router.post('/update',
     body('title').exists().isString(),
     body('body').exists().isString(),
-    body('productId').exists().isString(),
-    handleInputErrors, (req: Request, res: any) => {
+    body('productID').exists().isString(),
+    handleInputErrors, CreateUpdate)
 
-        return res.status(200).json({ msg: 'good' })
+router.delete('/update/:id', DeleteUpdate)
 
-    });
-
-
-router.delete('/update/:id', (req: Request, res: any) => {
-
-
-});
 
 
 
