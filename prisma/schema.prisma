@@ -1,66 +1,51 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
-generator client {
-  provider = "prisma-client-js"
-}
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
+generator client {
+  provider = "prisma-client-js"
+}
+
 model User {
-  id        String    @id @default(uuid())
-  createdAt DateTime  @default(now())
-  username  String    @unique
+  id        String     @id @default(uuid())
+  username  String     @unique
+  email     String     @unique
   password  String
-  products  Product[]
+  role      Role       @relation(fields: [roleId], references: [id])
+  roleId    String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  projects  Project[]  @relation("ProjectAssignment")
+  logs      AuditLog[]
+  Project   Project[]
+  deletedAt DateTime?  // Make sure this field is present
 }
 
-model Product {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-
-  name        String   @db.VarChar(255)
-  belongsToID String
-  belongsTo   User     @relation(fields: [belongsToID], references: [id])
-  Update      Update[]
+model Role {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  permissions String[]
+  users       User[]
 }
 
-enum UPDATE_STATUS {
-  IN_PROGRESS
-  SHIPPED
-  DEPRECATED
-}
-
-model Update {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  title   String
-  body    String
-  status  UPDATE_STATUS @default(IN_PROGRESS)
-  version String? // for optional
-  asset   String?
-
-  productID   String
-  product     Product       @relation(fields: [productID], references: [id])
-  UpdatePoint UpdatePoint[]
-}
-
-model UpdatePoint {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  name        String @db.VarChar(255)
+model Project {
+  id          String    @id @default(uuid())
+  name        String
   description String
+  createdBy   User      @relation(fields: [createdById], references: [id])
+  createdById String
+  assignedTo  User[]    @relation("ProjectAssignment")
+  deletedAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
 
-  updateId String
-  update   Update @relation(fields: [updateId], references: [id])
+model AuditLog {
+  id             String   @id @default(uuid())
+  action         String
+  performedBy    User     @relation(fields: [performedById], references: [id])
+  performedById  String
+  performedAt    DateTime @default(now())
+  targetResource String
 }
